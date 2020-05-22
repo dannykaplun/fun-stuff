@@ -1,6 +1,6 @@
 //---------------------
-//Daniel Kaplun, 1606945, PA1
-//List.c contains the ADT for PA1, Lex will call on List to implement functions such as append
+//Daniel Kaplun
+//List.c contains the ADT to lexicographically sort files with the functions written 
 //---------------------
 #include <stdio.h>
 #include <stdlib.h>
