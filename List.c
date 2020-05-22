@@ -6,6 +6,7 @@
 #include <stdlib.h>
 
 #include "List.h"
+#include "Graph.h"
 #define data1 int
 
 //************gonna need some structs I guess, how do they work?
@@ -24,7 +25,7 @@ typedef struct ListObj //
     Node front;        //
     Node back;         //
     Node cursor;       //
-    data1 index;         //
+    data1 indexx;         //
     data1 length;        //
 } ListObj;             //
 //--------------------------------------
@@ -50,7 +51,7 @@ void freeNode(Node *pointerNode)                     //
         free(*pointerNode);                          // p.i.h
         *pointerNode = NULL;                         //
     }                                                //
-} //
+} 
 //---------------------------------------------------
 
 // Returns reference to new empty List object.
@@ -62,28 +63,23 @@ List newList(void)                        //
     list->back = NULL;                    //
     list->cursor = NULL;                  //
     list->length = 0;                     //
-    list->index = -1;                     //
+    list->indexx = -1;                     //
     return (list);                        //
 } //
 //---------------------------------//
 
 // Frees all heap memory associated with Queue *pQ, and sets *pQ to NULL.S
 
-void freeList(List *pointerList)                     //
-{                                                    //
-    if (pointerList != NULL && *pointerList != NULL) //
-    {       
-        Node t = (*pointerList) ->front;            //
-        while (t != NULL)                            //
-        {                                            //
-            Node tbd = t;
-            t = t->next;
-            free(tbd);                               //
-        }                                            //
-        free(*pointerList);                          //
-        *pointerList = NULL;                         // p.i.h
-    }
-    return;                                                //
+void freeList(List *pL)                     
+{                                                    
+    if(pL != NULL && *pL != NULL){
+        //printf("in here\n");
+	while( !isEmpty(*pL)){
+		deleteFront(*pL);
+	}
+		free(*pL);
+		*pL = NULL;
+	}                                              
 } 
 //-----------------------------------------------------
 
@@ -100,26 +96,38 @@ data1 isEmpty(List L)                                        //
 } //
 //---------------------------------------------------------------
 // Returns the number of elements in L.
-data1 length(List L)    //
-{                     //
-    return L->length; //
-} //
+data1 length(List L)    
+{
+	if(L == NULL){
+		printf("error in length bc its null in list\n");
+		exit(1);
+	}
+    return L->length; 
+} 
 //---------------------------
-// Returns index of cursor element if defined, -1 otherwise.
-data1 index(List L)    //
-{                    //
-    return L->index; //
+// Returns indexx of cursor element if defined, -1 otherwise.
+data1 indexx(List L)    //
+{
+	if(L == NULL){
+		printf("error in indexx bc its null in list\n");
+		exit(1);
+	}
+    return L->indexx; 
 } //
 //-----------------------
 // Returns front element of L. Pre: length()>0
-data1 front(List L)                                                 //
-{                                                                 //
-    if (L->length <= 0)                                           //
-    {                                                             //
-        printf("exit bro, front function returns length of 0\n"); //
-        exit(1);                                                  //
-    }                                                             //
-    return (L->front->data);                                      //
+data1 front(List L)                                                 
+{                                                                 
+    if(L == NULL){
+		printf("List Error: calling front() on NULL List Reference\n");
+		exit(1);
+	}
+	if(isEmpty(L) ){
+		printf("List Error: calling front() on an empty List\n");
+		exit(1);
+	}
+
+	return(L->front->data);                                   
 } //
 //-----------------------------------------------------------------
 // Returns back element of L. Pre: length()>0
@@ -129,11 +137,11 @@ data1 back(List L)                                                 //
     {                                                            //
         printf("exit bro, back function returns length of 0\n"); //
         exit(1);                                                 //
-    }                                                            //
+    }                       
     return (L->back->data);                                      //
 } //
 //-------------------------------------------------------------------
-// Returns cursor element of L. Pre: length()>0, index()>=0
+// Returns cursor element of L. Pre: length()>0, indexx()>=0
 data1 get(List L)                                                              //
 {                                                                            //
     if (L->length <= 0)                                                      //
@@ -141,13 +149,13 @@ data1 get(List L)                                                              /
         printf("get function exiting bc length is equal to 0\n");            //
         exit(1);                                                             //
     }                                                                        //
-    if (L->index <= -1)                                                      //
+    if (L->indexx <= -1)                                                      //
     {                                                                        //
-        printf("get function exiting bc index is equal to or less than -1"); //
+        printf("get function exiting bc indexx is equal to or less than -1"); //
         exit(1);                                                             //
-    }                                                                        //
-    return (L->cursor->data);                                                //
-} //
+    }                                                             
+    return (L->cursor->data);                                                
+} 
 //---------------------------------------------------------------------------
 
 // Returns true (1) iff Lists A and B are in same state, and return false (0) otherwise
@@ -190,25 +198,18 @@ void clear(List L) // Resets L to its original empty state.
     L->front = NULL;
     L->back = NULL;
     L->cursor = NULL; //p.i.h
-    L->index = -1;
+    L->indexx = -1;
     L->length = 0;
     return;
 }
 
-void moveFront(List L)                                                      // If L is non-empty, sets cursor under the front element,otherwise does nothing.
-{                                                                           //
-    if (L == NULL)                                                          //first check if it is empty                                                         //
-    {                                                                       //
-        printf("exiting with error from movefront, list parsed is null\n"); //
-        exit(1);                                                            //
-    }                                                                       //
-    if (length(L) > 0)                                                      //
-    {                                                                       //
-        L->cursor = L->front;                                               //
-        L->index = 0;                                                       //p.i.h ordering?                                                                 //
-    }                                                                       //
-    return;                                                                 //
-} //
+void moveFront(List L) // If L is non-empty, sets cursor under the front element,otherwise does nothing.
+{                                                                           
+    if(L->length > 0){
+		L->cursor = L->front;
+		L->indexx = 0;
+	}
+} 
 //---------------------------------------------------------------------------
 void moveBack(List L)                                                      // If L is non-empty, sets cursor under the back element,otherwise does nothing.   //
 {                                                                          //
@@ -220,10 +221,10 @@ void moveBack(List L)                                                      // If
     if (length(L) > 0)                                                     //
     {                                                                      //
         L->cursor = L->back;                                               //
-        L->index = length(L) - 1;                                          //
+        L->indexx = length(L) - 1;                                          //
     }                                                                      //
     return;                                                                //
-} //
+} 
 //--------------------------------------------------------------------------
 void movePrev(List L) //
 {                     // 3 situations here,cursor is defined,cursor not defined
@@ -231,11 +232,11 @@ void movePrev(List L) //
     if (L->cursor != NULL)               //cursor is defined
     {                                    //
         L->cursor = L->cursor->previous; //p.i.h possible 'previous' issue
-        L->index--;                      //this will move cursor back
+        L->indexx--;                      //this will move cursor back
     }                                    //
     if (L->cursor == NULL)               //checks again for all undefined cursors
     {                                    //
-        L->index = -1;                   //
+        L->indexx = -1;                   //
     }                                    //
     return;                              //
 } //
@@ -244,10 +245,10 @@ void moveNext(List L)
 {
     if(L->cursor == L->back || L->cursor == NULL){
         L->cursor = NULL;
-        L->index = -1;
+        L->indexx = -1;
     } else {
         L->cursor = L->cursor->next;
-        L->index++;
+        L->indexx++;
     }
 
     return;
@@ -259,6 +260,7 @@ void prepend(List L, data1 data)
     Node t = newNode(data);
     if (L->front == NULL)
     {
+        printf("prepending with front being null\n");
         L->front = L->back = t;
     }
     else
@@ -266,25 +268,46 @@ void prepend(List L, data1 data)
         L->front->previous = t;
         t->next = L->front;
         L->front = t;
-        //p.i.h do we need index++ here?
+        //p.i.h do we need indexx++ here?
     }
 
     if (L->cursor != NULL){
-        L->index++;
+        L->indexx++;
     }
     L->length++;
     return;
+
+// Node temp = newNode(data);
+
+// 	if(L->front == NULL){
+// 		L->front = L->back = temp;
+// 	}
+// 	else{
+// 		L->front->previous = temp;
+// 		temp->next = L->front;
+// 		L->front = temp;
+// 		L->indexx++;
+// 	}
+// 	L->length++;
+
+
+
 }
 //---------------------------------------------------------------
 
 void append(List L, data1 data)
 {
-    // Insert new element into L. If L is non-empty,
-    // insertion takes place after back element.
+    // // Insert new element into L. If L is non-empty,
+    // // insertion takes place after back element.
+    // printf("could be here\n");
     Node t = newNode(data);
+    //printf("data is: %d\n", data);
+    //printList(stdout, L);
     if (L->back == NULL)
     {
+      //  printf("L back must be NULL\n");
         L->back = L->front = t;
+        //printf("did it\n");
     }
     else
     {
@@ -294,15 +317,26 @@ void append(List L, data1 data)
     }
     L->length++;
     return;
+// Node temp = newNode(data);
+// 	if(L->front == NULL){
+// 		L->front = L->back = temp;
+// 	}
+// 	else {
+// 		L->back->next = temp;
+// 		temp->previous = L->back;
+// 		L->back = temp;
+// 	}
+// 	L->length++;
+
 }
 //---------------------------------------------------------------
 void insertBefore(List L, data1 data)
 { //insert element before cursor
     Node t = newNode(data);
 
-    if (length(L) <= 0 || index(L) < 0)
+    if (length(L) <= 0 || indexx(L) < 0)
     {
-        printf("insertBefore error, length or index is 0>");
+        printf("insertBefore error, length or indexx is 0>");
         exit(1);
     }
 
@@ -311,25 +345,27 @@ void insertBefore(List L, data1 data)
 
         prepend(L, data);
 
-        
     } else {
     t->previous = L->cursor->previous; //p.i.h make sure you covered all instances
     L->cursor->previous->next = t;
     t->next = L->cursor;
     L->cursor->previous = t;
     L->length++;
-    L->index++;
+    L->indexx++;
     return;
+
     }
+
+
 }
 //---------------------------------------------------------------
 void insertAfter(List L, data1 data) // Insert new element after cursor.
-                                   // Pre: length()>0, index()>=0
+                                   // Pre: length()>0, indexx()>=0
 {                                  //insert element before cursor
     Node t = newNode(data);
-    if (length(L) <= 0 || index(L) < 0)
+    if (length(L) <= 0 || indexx(L) < 0)
     {
-        printf("insertAfter error, length or index is 0>");
+        printf("insertAfter error, length or indexx is 0>");
         exit(1);
     }
     if (L->cursor == L->back)
@@ -346,24 +382,51 @@ void insertAfter(List L, data1 data) // Insert new element after cursor.
     return;
 }
 //---------------------------------------------------------------
-void deleteFront(List L)
-{ // delete the front element. Pre: length()>0
-    Node t = NULL;
-    if(L->cursor == L -> front){
-        L->index = -1;
-        L->cursor = NULL;
-    }
+// void deleteFront(List L)
+// { // delete the front element. Pre: length()>0
+// printf("yeah yeah in here deletefront\n");
+//     Node t = NULL;
+//     if(L->cursor == L -> front){
+//         L->indexx = -1;
+//         L->cursor = NULL;
+//     }
 
-    if(L->cursor != NULL ){
-        L->index--;
-    }
+//     if(L->cursor != NULL ){
+//         L->indexx--;
+//     }
 
+//     t = L->front;
+//     L->front = L->front->next;
+//     L->front->previous = NULL;
+//     L->length--;
+//     freeNode(&t);
+//     return;
+// }
+
+void deleteFront(List L){
+    //printf("yeah yeah in here deletefront\n");
+   Node t = NULL;
+
+   if( L == NULL ){
+      printf("deletefront exiting bc L is null\n");
+      exit(1);
+   }
+   if( isEmpty(L) ){
+      printf("deletefront exiting bc isEmpty is true\n");
+      exit(1);
+   }
+   //--------------
     t = L->front;
-    L->front = L->front->next;
-    L->front->previous = NULL;
-    L->length--;
-    freeNode(&t);
-    return;
+	L->front = L->front->next;
+    //------------
+	if(L->front == NULL){
+		L->back = NULL;
+	}
+	else{
+		L->front->previous = NULL;
+	}
+	L->length--;
+	freeNode(&t);
 }
 //---------------------------------------------------------------
 void deleteBack(List L)
@@ -383,7 +446,7 @@ void deleteBack(List L)
     t = L->back; //to be deleted
     if(L->cursor == L->back) {
         L->cursor = NULL;
-        L->index = -1;
+        L->indexx = -1;
     }
     if (length(L) > 1)
     {
@@ -394,43 +457,44 @@ void deleteBack(List L)
     return;
 }
 //---------------------------------------------------------------
-void delete(List L)
+void deLete(List L)
 {
     //delete cursor element, leaving cursor undefined
-    //Preconditions: length()>0, index()=>0
+    //Preconditions: length()>0, indexx()=>0
     //Node t = NULL;
     if (L == NULL)
     {
         printf("exiting with an error from delete function, list parsed is null");
         exit(1);
     }
-    if (length(L) <= 0 || index(L) < 0)
+    if (length(L) <= 0 || indexx(L) < 0)
     {
-        printf("exiting with an error bc either length is 0 or index is -1");
+        printf("exiting with an error bc either length is 0 or indexx is -1");
         exit(1);
     }
-    if (index(L) >= 0)
+    if (indexx(L) >= 0)
     {
         // printf("ive made it into delete\n");
         if (L->cursor == L->front){
             deleteFront(L);
             L->cursor = NULL;
-            L->index = -1;
+            L->indexx = -1;
             return;
         }
         if (L->cursor == L->back) {
             deleteBack(L);
             L->cursor = NULL;
-            L->index = -1;
+            L->indexx = -1;
             return;
         }     
         L->cursor->previous->next = L->cursor->next;
         L->cursor->next->previous = L->cursor->previous;
         L->cursor = NULL;
-        L->index = -1;
+        L->indexx = -1;
         L->length--;
         freeNode(&L->cursor);
         return;
+    
     }
 }
 //---------------------------------------------------------------
@@ -438,32 +502,16 @@ void delete(List L)
 //Other functions begin here////////////////////////////////////
 void printList(FILE *out, List L)
 {
-    Node T = NULL;
-    data1 checker = 1;
+    	Node temp = L->front;
+	while(temp != NULL) {
+		fprintf(out, "%d ", temp->data);
+		temp = temp->next;
+	}
 
-    if (L == NULL)
-    {
-        printf("exiting bc list in printlist is null");
-        exit(1);
-    }
-    T = L->front;
-    while (checker == 1)
-    {
-        printf("%d", T->data);
-        T = T->next;
-        if (T == NULL)
-        {
-            checker = 0;
-        }
-    }
-            printf("\n");
-
-    return;
 }
 //---------------------------------------------------------------
 List copyList(List L)
-{
-    
+{    
     List copy = newList();
     for (Node N = L->front; N != NULL; N = N->next)
     {
@@ -474,55 +522,3 @@ List copyList(List L)
 
 
 
-//from quiz 1 (below)
-
-//  data1  searchList(List L, data1 x) {
-//      moveFront(L);
-
-//      for (data1 i = 0; i < L->length; i++)
-//      {
-//          if(x == get(L)) {
-//              return index(L);
-//          }
-//          moveNext(L);
-//      }
-
-//      L->cursor = NULL;
-//      L->index = -1;
-//      return L->index;
-//  }
-
-    // data1  isPalindrome(List L) {
-    //     List temp = newList();
-    //     moveFront(L);
-
-
-    //     for(data1 i = 0; i < length(L)/2; i++) {        
-    //         append(temp, get(L));
-    //         moveNext(L);
-    //     }
-    //     moveFront(temp);
-    //     moveBack(L);
-
-    //     for(data1 i = 0; i < length(temp); i++) {
-    //         if(get(L) != get(temp)){
-    //             return 0;
-    //         }
-    //         moveNext(temp);
-    //         movePrevious(L);
-    //     }
-
-    //    return 1;
-    // }
-
-
-/*
-Your function will perform a linear search in L for the target x.  
-Your function will return the lowest index (i.e. nearest the front) at which the target is found, 
-if it is found, and will return -1 if the target is not found.  
-Upon return, the input list will have its cursor under the found element, if found, 
-and will have it's cursor in the undefined state if the target is not found.
-
-
-
-*/
