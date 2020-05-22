@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------
 //
-// GraphClient.c
+// GraphBFSClient.c
 // 
 // This is a fancy test client that calculates the Radius and Diameter of 
 // the graph defined starting on line 47, along with its Central and Peripheral 
@@ -11,7 +11,7 @@
 
 #include<stdio.h>
 #include<stdlib.h>
-#include"Graph.h"
+#include"GraphBFS.h"
 
 int main(int argc, char* argv[]){
    int i, s, max, min, d, n=35;
