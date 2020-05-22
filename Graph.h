@@ -1,4 +1,4 @@
-//Daniel Kaplun, PA4 Tantalo Spring 2020. This is the header file for the Graph ADT (Graph.h)
+//Daniel Kaplun. This is the header file for the Graph ADT (Graph.h implementing Depth First Search)
 
 #ifndef GRAPH_H_INCLUDED
 #define GRAPH_H_INCLUDED
