@@ -1,4 +1,4 @@
-//Daniel Kaplun, 1606945, PA1
+//Daniel Kaplun
 //Header file for List.c
 #ifndef _LIST_H_INCLUDE_
 #define _LIST_H_INCLUDE_
