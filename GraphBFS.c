@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "Graph.h"
+#include "GraphBFS.h"
 #include "List.h"
 
 #define NIL 0
