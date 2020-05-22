@@ -1,7 +1,7 @@
 //Daniel Kaplun. This is the header file for the Graph ADT (Graph.h implementing Breath First Search)
 
-#ifndef GRAPH_H_INCLUDED
-#define GRAPH_H_INCLUDED
+#ifndef GRAPHBFS_H_INCLUDED
+#define GRAPHBFS_H_INCLUDED
 #include "List.h"
 
 #define NIL 0
