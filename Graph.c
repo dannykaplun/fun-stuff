@@ -1,4 +1,4 @@
-//Daniel Kaplun, PA4 Tantalo Spring 2020. This is the Graph ADT implementing Graph Theory (Graph.c)
+//Daniel Kaplun. This is the Graph ADT implementing Graph Theory (Graph.c using Depth First Search)
 
 #include <stdio.h>
 #include <stdlib.h>
